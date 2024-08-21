@@ -1,0 +1,25 @@
+{
+    "liveServer.settings.port": 4500,
+    "liveServer.settings.root": "/html",
+    "liveServer.settings.CustomBrowser" : "chrome",
+    // "liveServer.settings.AdvanceCustomBrowserCmdLine": "chrome --incognito --remote-debugging-port=9222",
+    "liveServer.settings.NoBrowser" : false,
+    "liveServer.settings.ignoreFiles" : [
+        //    ".vscode/**",
+        //    "**/*.scss",
+        //    "**/*.sass"
+    ],
+    "files.associations": {
+        "memory": "cpp",
+        "system_error": "cpp",
+        "optional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp"
+    }
+
+}
