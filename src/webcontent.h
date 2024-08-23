@@ -11,7 +11,7 @@ let boardname;
 let resetconfig = false;
 let advancedNetwork = false;
 let rebootCheck;
-let BOARD_NAME = "blecker";
+let BOARD_NAME = "blecker-bm6";
 // AJAX service
 ajax.x = function () {
 if (typeof XMLHttpRequest !== 'undefined') {
@@ -373,7 +373,7 @@ const char data_index_html[] PROGMEM = R"=====(
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>Blecker Administration</title>
+<title>Blecker BM6 Administration</title>
 </head>
 <body>
 <div id="loadingStart">Loading...</div>
@@ -383,21 +383,21 @@ const char data_index_html[] PROGMEM = R"=====(
 <div>&#8230;</div>
 </div>
 <div class="logo">
-BLEcker
+BLEcker BM6
 </div>
 <div id="header">
 <div class="row">
-<h5><strong>BLE</strong> <i>tracker</i></h5>
+<h5><strong>BLE + BM6 battery monitor</strong> <i>tracker</i></h5>
 </div>
 </div>
 <div id="sidebar">
 <a class="button w100" href="/">home</a>
 <a class="button w100" href="/update">update</a>
 <!--<a class="button w100 button-danger" id="reset" href="#">reset</a>-->
-<div class="version" id="version">v1.11 - 1</div>
+<div class="version" id="version">v1.11 - 2</div>
 <div class="version" id="chip"></div>
 <div id="footer">
-<div><a href="https://github.com/redakker/blecker" target="_blank">blecker</a></div>
+<div><a href="https://github.com/Goodwillson/blecker-bm6" target="_blank">Blecker BM6</a></div>
 </div>
 </div>
 <div id="content">
@@ -1580,7 +1580,7 @@ BLEcker
 <a class="button w100" href="/">home</a>
 <a class="button w100" href="/update">update</a>
 <!--<a class="button w100 button-danger" id="reset" href="#">reset</a>-->
-<div class="version" id="version">v1.11 - 1</div>
+<div class="version" id="version">v1.11 - 2</div>
 <div id="footer">
 <div><a href="https://github.com/redakker/blecker" target="_blank">blecker</a></div>
 </div>

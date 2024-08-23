@@ -1,6 +1,5 @@
 #include "utilities.h"
 #include "definitions.h"
-#include <BLEScan.h>
 
 
 esp_chip_info_t chip_info;
@@ -24,19 +23,4 @@ const char* getChipModelString(esp_chip_model_t model) {
         default:
             return "Unknown";
     }
-}
-
-void bluetoothScanner(void *parameters) {
-  
-  BLEScan *pBLEScan = static_cast<BLEScan*>(parameters);
-
-  for( ;; ) {
-    pBLEScan -> start(BT_DEFAULT_SCAN_DURATION_IN_SECONDS, false);
-    
-    // Tell the task how long to delay for:
-    vTaskDelay(2000 / portTICK_PERIOD_MS );    
-    
-    pBLEScan -> clearResults();   // delete results fromBLEScan buffer to release memory
-    vTaskDelay(20 / portTICK_PERIOD_MS ); 
-  }
 }

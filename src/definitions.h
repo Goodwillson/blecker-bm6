@@ -5,7 +5,7 @@
 #define MAJOR_VERSION 1.11
 
 // Board specific setings
-#define BOARD_NAME "blecker"
+#define BOARD_NAME "blecker-bm6"
 #define LED_BUILTIN 2
 #define EEPROM_SIZE 1024
 #define SERIAL_SPEED 115200
@@ -18,17 +18,17 @@
 
 #define MQTT_STATUS_ON_DEFAULT_VALUE "on"
 #define MQTT_STATUS_OFF_DEFAULT_VALUE "off"
-#define MQTT_STATUS_DEFAULT_RETAIN false
+#define MQTT_STATUS_DEFAULT_RETAIN true
 
 #define MQTT_BEACON_PRESENCE_ON_DEFAULT_VALUE "on"
 #define MQTT_BEACON_PRESENCE_OFF_DEFAULT_VALUE "off"
-#define MQTT_BEACON_PRESENCE_DEFAULT_RETAIN false
+#define MQTT_BEACON_PRESENCE_DEFAULT_RETAIN true
 
 #define MQTT_KEEPALILIVE_TIME 30000 // in milliseconds
 
 // Presence
-#define DEFAULT_PRESENT "present"
-#define DEFAULT_NOT_PRESENT "not_present"
+#define DEFAULT_PRESENT "home"
+#define DEFAULT_NOT_PRESENT "away"
 #define BT_DEVICE_TIMEOUT 1000*60 // 60 seconds in milliseconds (is is marked as gone, drop out when DEVICE_DROP_OUT_COUNT is decreased to 0)
 #define BT_LIST_REBUILD_INTERVAL 1000*60*60 // Just clear the list after every hour and rebuild again, send "refresh" state time to time even if the device is not gone
 #define DEVICE_DROP_OUT_COUNT 2 // We won't drop out in the first "not found" state, just decrease this value. Drop out when this is 0
@@ -79,5 +79,9 @@
 #define DB_DEVICE_STATUS_RETAIN "status_retain"
 #define DB_DEVICE_ID "deviceid"
 #define DB_BEACON_PRESENCE_RETAIN "presence_retain"
+
+// BM 6
+#define SCAN_INTERVAL_MINUTES 1
+#define BM6_VENDOR_MAC "50547B"
 
 #endif

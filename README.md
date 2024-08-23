@@ -1,8 +1,8 @@
-# BLEcker
-**Bluetooth low energy (BLE) tracker for ESP32**
+# BLEcker BM6
+**Bluetooth low energy (BLE) tracker with BM6 car battery monitor support for ESP32**
 
 This software is written for ESP32 boards to track BLE devices. It can be used for your smart home, scan BLE devices and send their presence to your smart home hub over MQTT. From version 1.04 webhook call is also possible.
-This is a ready-to-use program, you don't need to modify the code (add your wifi, mqtt credentials whatever). Settings can be done on a nice web interface.
+This is a ready-to-use program, you don't need to modify the code (add your wifi, mqtt credentials whatever). Settings can be done on a nice web interface. BM6 version adds support for BM6 (Ancel BM200) car battery monitor. It reads voltage, temperature, power and adds it to MQTT advanced report for devices with MAC address starting with 50547B, which is BM6 vendor MAC range. Other devices are checked just for presence and no active connection is established to save battery. By default, only presence status of each device is reported. This software is based on Blecker 1.11 by Redakker https://github.com/redakker/blecker/. 
 
 ## What does it exactly
 This is a very simple tracker software which creates an MQTT topic for each scanned device mac address (without ":" ) under the base topic and sends the availability as payload.
@@ -40,7 +40,18 @@ BREAKING CHANGE from 1.06
 
 -- System sends a detailed status message about the BLE device: **/blecker/status/[device-mac]**\ --
 ```
-{"name":"", "rssi":"", "mac":"123456abcdef", "presence":"present", "observed":"true", "lastSeenMs":"18023"}
+{
+  "name": "",
+  "rssi": "",
+  "mac": "50547b123456",
+  "presence": "home",
+  "observed": "true",
+  "volts": "12.270000",
+  "temp": "29.000000",
+  "power": "0.000000",
+  "lastSeenMs": "12492"
+  "lastSeenMs": "11992"
+}
 ```
 
 This message is coming together with the normal availability message.
@@ -86,18 +97,6 @@ Discovery message is sent out every 60 seconds.
   * download the binary here
   * read how to install and use esptool: https://github.com/espressif/esptool
   * upload the binary with something like this: esptool.py --chip esp32 image_info blecker.bin
-
-3. **Use the web tool on [https://redakker.github.io/blecker/](https://redakker.github.io/blecker/)**
-  * navigate to the page above
-  * connect your device using USB
-  * choose the version you want to upload
-  * press the connect button
-  * choose your device from the list in the browser popup
-  * follow the instructions in the modal
-
-Be aware the third solution works currently with chrome/chromium engine browsers (Chrome/Edge)
-
-With [https://redakker.github.io/blecker/](https://redakker.github.io/blecker/) you can check the device logs too for debugging. Connect your device and in the modal click to "Logs & Console". You might click the "Reset device" to see the logs.
 
 ## First steps
 Upload and start the code on ESP32. If there is no configuration yet then it offers an access point. The name of the accesspoint can be found in this file: definitions.h It is "blecker" now.
