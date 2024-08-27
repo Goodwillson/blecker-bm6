@@ -8,7 +8,7 @@ This is a ready-to-use program, you don't need to modify the code (add your wifi
 This is a very simple tracker software which creates an MQTT topic for each scanned device mac address (without ":" ) under the base topic and sends the availability as payload.
 I personally use it for presence detection of family members. Every family member has a BLE device on her/his keyring and smart home can do automations depends on the members' availability. For example: turn on the alarm system if nobody at home.
 
-The default topic is **/blecker**\
+The default topic is **/blecker-bm6**\
 The default payload for available device: **present**\
 The default payload for not available device: **not_present**
 ### Example
@@ -16,13 +16,13 @@ The default payload for not available device: **not_present**
 Device MAC is: `12:34:56:ab:cd:ef`
 Send an MQTT message if available: 
 ```
-topic: /blecker/123456abcdef
+topic: /blecker-bm6/123456abcdef
 payload: present
 ```
 
 Send an MQTT message if NOT available: 
 ```
-topic: /blecker/123456abcdef
+topic: /blecker-bm6/123456abcdef
 payload: not_present
 ```
 
@@ -34,11 +34,9 @@ The administrator can define an observable device list in a web frontend. These 
 If the device is not available after the system start, "not available" message will be never sent out just in case the BLE device becomes available and will be gone again.
 
 ### Status messages
--- System sends a detailed status message about the BLE device periodically: **/blecker/[device-mac]/status**\ --
+-- System sends a detailed status message about the BLE device periodically: **/blecker-bm6/[device-mac]/status**\ --
 
-BREAKING CHANGE from 1.06
-
--- System sends a detailed status message about the BLE device: **/blecker/status/[device-mac]**\ --
+-- System sends a detailed status message about the BLE device: **/blecker-bm6/status/[device-mac]**\ --
 ```
 {
   "name": "",
@@ -49,14 +47,21 @@ BREAKING CHANGE from 1.06
   "volts": "12.270000",
   "temp": "29.000000",
   "power": "0.000000",
-  "lastSeenMs": "12492"
-  "lastSeenMs": "11992"
+  "lastSeenMs": "12492"  
 }
 ```
 
 This message is coming together with the normal availability message.
 The payload is a JSON object structure which contains detailed data like **name**, **rssi**, **observed**, **lastSeenMs**, etc. for more possibilities.
 This function is off by default. It can be changed on a web administration UI.
+
+### Format of BM6 message
+BM6 device sends all data in hexadecimal string starting with d15507, which is then parsed to obtain specific values (eg. d15507001b011004800000000002ffff). So far known values are:
+
+d15507 00  1b    01   10   0 480    0000000002ffff
+
+          temp      power   volts
+           27        16     11.52
 
 ### Webhook
 This feature is available in and over version 1.04. It was implemented under ticket [#10](/../../issues/10).
@@ -106,7 +111,7 @@ You can set your WiFi and MQTT credentials on that administration page. See the 
 
 Later you can find the web administration tool on the IP address which was set to the ESP32. Check it in your own router or WiFi manager tool.
 
-Thanks for the mDNS support, you can find your board in the local area network if you call the URL: http://blecker
+Thanks for the mDNS support, you can find your board in the local area network if you call the URL: http://blecker-bm6
 
 or chek the IP address of it with the following command in the commmand line: *nslookup blecker*
 

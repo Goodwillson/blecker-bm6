@@ -22,6 +22,7 @@ struct Device {
     float volts;
     float temp;
     float power;
+    String msg;
     // internal data
     unsigned long lastSeen;
     int mark;

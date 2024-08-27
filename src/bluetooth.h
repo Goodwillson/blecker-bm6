@@ -18,6 +18,7 @@ struct BM6Data {
   float voltage;
   int temperature;
   int power;
+  String msg;
 };
 
 class BlueTooth: public BLEAdvertisedDeviceCallbacks {

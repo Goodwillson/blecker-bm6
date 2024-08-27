@@ -204,7 +204,7 @@ void BlueTooth::onResult(NimBLEAdvertisedDevice* advertisedDevice) {
 
     if (!monitorObservedOnly) {
         if (newFound) {
-            Device dev = {deviceName, deviceRSSI, deviceMac, true, NAN, NAN, NAN, millis(), DEVICE_DROP_OUT_COUNT, false };
+            Device dev = {deviceName, deviceRSSI, deviceMac, true, NAN, NAN, NAN, "", millis(), DEVICE_DROP_OUT_COUNT, false };
             devices.add(dev);
             logger << "New device found. MAC: " << deviceMac;
             // Send an MQTT message about this device is at home
@@ -232,6 +232,7 @@ void BlueTooth::fillDevices(String devicesString) {
                 NAN, // volts
                 NAN, // temp
                 NAN, // power
+                "",
                 millis(), // lastSeen
                 DEVICE_DROP_OUT_COUNT, // mark
                 true //observed
@@ -251,7 +252,7 @@ void BlueTooth::handleDeviceChange(Device dev) {
     deviceChanged->fire(dev);
 
     if (detailedReport) {
-        String payload = "{\"name\":\"" + ((dev.name == NULL) ? "" : dev.name) + "\", \"rssi\":\"" + ((dev.rssi == NULL) ? "" : dev.rssi) + "\", \"mac\":\"" + ((dev.mac == NULL) ? "" : dev.mac) + "\", \"presence\":\"" + database -> getPresentString(dev.available) + "\", \"observed\":\"" + ((dev.observed) ? "true" : "false") + "\", \"volts\":\"" + (std::isnan(dev.volts) ? "N/A" : std::to_string(dev.volts).c_str()) + "\", \"temp\":\"" + (std::isnan(dev.temp) ? "N/A" : std::to_string(dev.temp).c_str()) + "\", \"power\":\"" + (std::isnan(dev.power) ? "N/A" : std::to_string(dev.power).c_str()) + "\", \"lastSeenMs\":\"" + (millis() - dev.lastSeen) + "\"}";
+        String payload = "{\"name\":\"" + ((dev.name == NULL) ? "" : dev.name) + "\", \"rssi\":\"" + ((dev.rssi == NULL) ? "" : dev.rssi) + "\", \"mac\":\"" + ((dev.mac == NULL) ? "" : dev.mac) + "\", \"presence\":\"" + database -> getPresentString(dev.available) + "\", \"observed\":\"" + ((dev.observed) ? "true" : "false") + "\", \"volts\":\"" + (std::isnan(dev.volts) ? "N/A" : std::to_string(dev.volts).c_str()) + "\", \"temp\":\"" + (std::isnan(dev.temp) ? "N/A" : std::to_string(dev.temp).c_str()) + "\", \"power\":\"" + (std::isnan(dev.power) ? "N/A" : std::to_string(dev.power).c_str()) + "\", \"msg\":\"" + ((dev.msg == NULL) ? "" : dev.msg) + "\", \"lastSeenMs\":\"" + (millis() - dev.lastSeen) + "\"}";
         MQTTMessage message = MQTTMessage{ String ("status/" + dev.mac), payload, beaconPresenceRetain };
         mqttMessageSend->fire(message);
     }
@@ -285,7 +286,7 @@ void BlueTooth::getBM6Data(const char* address) {
     logger << "Starting BM6 data retrieval...";
     bm6_data.voltage = 0;
     bm6_data.temperature = 0;
-    bm6_data.power = 0;
+    bm6_data.power = 0;    
 
     NimBLEClient* client = nullptr;
     const int maxRetries = 3;
@@ -382,11 +383,13 @@ void BlueTooth::getBM6Data(const char* address) {
         for (int i = 0; i < this -> devices.size(); i++) {
             Device dev = devices.get(i);
             if (strAddress.equalsIgnoreCase(dev.mac)) {
+                dev.name = "BM6";
                 dev.available = true;            
                 dev.lastSeen = millis();
                 dev.volts =  bm6_data.voltage;
                 dev.temp =  bm6_data.temperature;
-                dev.power = bm6_data.power;      
+                dev.power = bm6_data.power;
+                dev.msg = bm6_data.msg;
                 devices.set(i, dev);
                 logger << "Updated device battery data: " << dev.mac;
             }
@@ -442,6 +445,7 @@ void BlueTooth::notificationHandler(BLERemoteCharacteristic* characteristic, uin
         bm6_data.voltage = strtol(message.substring(15, 18).c_str(), NULL, 16) / 100.0;
         bm6_data.temperature = strtol(message.substring(8, 10).c_str(), NULL, 16);
         bm6_data.power = strtol(message.substring(12, 14).c_str(), NULL, 16);
+        bm6_data.msg = message;
     }
 }
 

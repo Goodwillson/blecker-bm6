@@ -29,7 +29,7 @@
 // Presence
 #define DEFAULT_PRESENT "home"
 #define DEFAULT_NOT_PRESENT "away"
-#define BT_DEVICE_TIMEOUT 1000*60 // 60 seconds in milliseconds (is is marked as gone, drop out when DEVICE_DROP_OUT_COUNT is decreased to 0)
+#define BT_DEVICE_TIMEOUT 1000*30 // 30 seconds in milliseconds (is is marked as gone, drop out when DEVICE_DROP_OUT_COUNT is decreased to 0)
 #define BT_LIST_REBUILD_INTERVAL 1000*60*60 // Just clear the list after every hour and rebuild again, send "refresh" state time to time even if the device is not gone
 #define DEVICE_DROP_OUT_COUNT 2 // We won't drop out in the first "not found" state, just decrease this value. Drop out when this is 0
 #define PARSE_CHAR ";"
